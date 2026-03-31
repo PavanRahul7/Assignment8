@@ -1,0 +1,88 @@
+# .github/workflows/ci.yml
+#
+# Continuous Integration workflow for the FastAPI Calculator application.
+# Runs unit tests, integration tests, and end-to-end (Playwright) tests
+# automatically on every push and pull request.
+
+name: CI - FastAPI Calculator Tests
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  # -------------------------------------------
+  # Job 1: Unit and Integration Tests
+  # -------------------------------------------
+  unit-and-integration-tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ["3.10"]
+
+    steps:
+      # Step 1: Check out the repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up the specified Python version
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Step 3: Install Python dependencies from requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Step 4: Run unit tests with pytest and coverage
+      - name: Run Unit Tests
+        run: |
+          pytest tests/unit/ -v --cov=app --cov-report=term-missing
+
+      # Step 5: Run integration tests with pytest and coverage
+      - name: Run Integration Tests
+        run: |
+          pytest tests/integration/ -v --cov=app --cov-report=term-missing
+
+  # -------------------------------------------
+  # Job 2: End-to-End Tests with Playwright
+  # -------------------------------------------
+  e2e-tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ["3.10"]
+
+    steps:
+      # Step 1: Check out the repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up the specified Python version
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Step 3: Install Python dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Step 4: Install Playwright browsers (Chromium for headless E2E testing)
+      - name: Install Playwright Browsers
+        run: |
+          playwright install --with-deps chromium
+
+      # Step 5: Run E2E tests with the e2e marker
+      - name: Run E2E Tests
+        run: |
+          pytest tests/e2e/ -v -m e2e --cov=app --cov-report=term-missing

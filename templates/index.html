@@ -32,15 +32,18 @@
             font-size: 1.8rem;
             font-weight: 700;
             text-align: center;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
             letter-spacing: -0.5px;
         }
 
-        .subtitle {
+        h2 {
             color: rgba(255, 255, 255, 0.4);
             text-align: center;
             font-size: 0.85rem;
-            margin-bottom: 32px;
+            font-weight: 500;
+            margin-bottom: 28px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .inputs {
@@ -132,8 +135,8 @@
 </head>
 <body>
     <div class="card">
-        <h1>Calculator</h1>
-        <p class="subtitle">Enter two numbers and choose an operation</p>
+        <h1>Hello World</h1>
+        <h2>Calculator</h2>
 
         <div class="inputs">
             <input type="number" id="a" placeholder="First number">
@@ -147,7 +150,7 @@
             <button class="btn-div" onclick="calculate('divide')">÷ Divide</button>
         </div>
 
-        <div class="result-box" id="result">Result will appear here</div>
+        <div class="result-box" id="result"></div>
     </div>
 
     <script>
@@ -172,10 +175,10 @@
 
                 if (response.ok) {
                     resultEl.className = 'result-box success';
-                    resultEl.innerText = data.result;
+                    resultEl.innerText = 'Calculation Result: ' + data.result;
                 } else {
                     resultEl.className = 'result-box error';
-                    resultEl.innerText = data.error;
+                    resultEl.innerText = 'Error: ' + data.error;
                 }
             } catch (err) {
                 resultEl.className = 'result-box error';

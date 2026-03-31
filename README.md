@@ -146,21 +146,7 @@ The workflow (`.github/workflows/ci.yml`) runs automatically on every push/PR to
 - **Job 1: `unit-and-integration-tests`** — Installs dependencies, runs unit + integration tests with coverage
 - **Job 2: `e2e-tests`** — Installs dependencies + Playwright browsers, runs E2E tests
 
-## Submission Checklist
+Screenshot
+<img width="1915" height="978" alt="Screenshot 2026-03-31 183054" src="https://github.com/user-attachments/assets/90fd92dc-ba30-4c48-b792-7deb5c6dd3e7" />
 
-- [x] GitHub Repository with all code and tests
-- [ ] Screenshot: Successful GitHub Actions workflow run (green checkmark)
-- [ ] Screenshot: Application running in the browser at `http://localhost:8000`
 
-### How to Get Your Screenshots
-
-1. **GitHub Actions Screenshot**: Push your code to GitHub → go to the "Actions" tab → click on the latest workflow run → screenshot the green checkmarks.
-2. **Application Screenshot**: Run `python main.py` → open `http://localhost:8000` → enter numbers and click an operation → screenshot the page showing the result.
-
-## Docker (Optional)
-
-```bash
-docker-compose up --build
-```
-
-Then visit [http://localhost:8000](http://localhost:8000).

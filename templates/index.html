@@ -1,316 +1,185 @@
 <!DOCTYPE html>
-<!--
-    Document Type Declaration (DOCTYPE)
-    
-    The <!DOCTYPE html> declaration defines the document type and version of HTML.
-    It ensures that the browser interprets the document as an HTML5 document.
-    This declaration is mandatory and should be the very first line in your HTML document.
--->
-
 <html lang="en">
-<!--
-    <html> Tag
-    
-    The <html> element is the root element of an HTML page. It encapsulates all other elements
-    within the document. The lang="en" attribute specifies that the language of the document is English,
-    which aids in accessibility and SEO (Search Engine Optimization).
--->
 <head>
-    <!--
-        <head> Section
-        
-        The <head> element contains meta-information about the HTML document, such as its title,
-        character set, linked resources like CSS and JavaScript files, and other metadata.
-        This information is not displayed directly on the web page.
-    -->
-    
     <meta charset="UTF-8">
-    <!--
-        <meta> Tag: Character Set
-        
-        The <meta charset="UTF-8"> tag specifies the character encoding for the HTML document.
-        UTF-8 is a widely used encoding that supports virtually all characters from all languages,
-        ensuring that text is rendered correctly.
-    -->
-    
-    <title>Hello World & Calculator Demo</title>
-    <!--
-        <title> Tag
-        
-        The <title> element defines the title of the HTML document, which appears in the browser's
-        title bar or tab. It is also used by search engines to understand the content of the page.
-    -->
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
     <style>
-        /*
-            <style> Section: CSS Styles
-            
-            The <style> element allows you to embed CSS (Cascading Style Sheets) directly within
-            the HTML document. CSS is used to style and layout web pages, controlling aspects
-            like colors, fonts, spacing, and positioning.
-        */
-        
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            /* 
-                Styles for the <body> Element
-                
-                - font-family: Sets the font for the entire page to Arial, sans-serif.
-                - text-align: Centers the text horizontally.
-                - margin-top: Adds a 50-pixel margin at the top of the page for spacing.
-            */
-            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 1.8rem;
+            font-weight: 700;
             text-align: center;
-            margin-top: 50px;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
         }
-        
-        .calculator {
-            /* 
-                Styles for Elements with the "calculator" Class
-                
-                - margin-top: Adds a 30-pixel margin above the calculator section to separate it
-                  from other content.
-            */
-            margin-top: 30px;
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.4);
+            text-align: center;
+            font-size: 0.85rem;
+            margin-bottom: 32px;
         }
-        
-        input {
-            /* 
-                Styles for <input> Elements
-                
-                - margin: Adds a 5-pixel margin around input fields for spacing.
-                - padding: Adds a 5-pixel padding inside input fields for better readability.
-            */
-            margin: 5px;
-            padding: 5px;
+
+        .inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
         }
-        
+
+        input[type="number"] {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        input[type="number"]::placeholder { color: rgba(255, 255, 255, 0.3); }
+
+        input[type="number"]:focus {
+            border-color: rgba(99, 179, 237, 0.6);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        /* Remove number input arrows */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+        input[type="number"] { -moz-appearance: textfield; }
+
+        .ops {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
         button {
-            /* 
-                Styles for <button> Elements
-                
-                - padding: Adds 5 pixels of vertical padding and 10 pixels of horizontal padding
-                  inside buttons to make them larger and more clickable.
-            */
-            padding: 5px 10px;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.2s, box-shadow 0.2s;
+            letter-spacing: 0.3px;
         }
-        
-        .result {
-            /* 
-                Styles for Elements with the "result" Class
-                
-                - margin-top: Adds a 10-pixel margin above the result display area.
-                - font-weight: Makes the text bold to emphasize the result.
-            */
-            margin-top: 10px;
-            font-weight: bold;
+
+        button:active { transform: scale(0.97); }
+
+        .btn-add    { background: linear-gradient(135deg, #43e97b, #38f9d7); color: #0a2e1a; }
+        .btn-sub    { background: linear-gradient(135deg, #f093fb, #f5576c); color: #fff; }
+        .btn-mul    { background: linear-gradient(135deg, #4facfe, #00f2fe); color: #0a1e2e; }
+        .btn-div    { background: linear-gradient(135deg, #fa709a, #fee140); color: #2e0a1a; }
+
+        button:hover { opacity: 0.88; box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+
+        .result-box {
+            margin-top: 24px;
+            min-height: 56px;
+            padding: 16px 20px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.3);
+            transition: color 0.3s, background 0.3s, border-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .result-box.success {
+            color: #43e97b;
+            background: rgba(67, 233, 123, 0.08);
+            border-color: rgba(67, 233, 123, 0.25);
+        }
+
+        .result-box.error {
+            color: #f5576c;
+            background: rgba(245, 87, 108, 0.08);
+            border-color: rgba(245, 87, 108, 0.25);
         }
     </style>
 </head>
 <body>
-    <!--
-        <body> Section
-        
-        The <body> element contains all the contents of an HTML document, such as text, images,
-        links, buttons, and other media. Everything within the <body> tag is rendered on the
-        web page and visible to users.
-    -->
-    
-    <h1>Hello World</h1>
-    <!--
-        <h1> Tag: Heading
-        
-        The <h1> element represents the most important heading on the page. It is typically used
-        for the main title or headline. Search engines give significant weight to <h1> tags for SEO.
-    -->
-    
-    <div class="calculator">
-        <!--
-            <div> Element with "calculator" Class
-            
-            The <div> element is a generic container used to group other elements. The class="calculator"
-            attribute assigns the "calculator" class to this <div>, allowing it to be styled using CSS.
-            This section contains the calculator interface, including input fields and buttons.
-        -->
-        
-        <h2>Calculator</h2>
-        <!--
-            <h2> Tag: Subheading
-            
-            The <h2> element represents a secondary heading, subordinate to <h1>. It introduces the
-            calculator section of the page.
-        -->
-        
-        <input type="number" id="a" placeholder="First number">
-        <!--
-            <input> Element: First Number Input
-            
-            - type="number": Specifies that the input should accept numeric values.
-            - id="a": Assigns a unique identifier "a" to this input, allowing it to be accessed via JavaScript.
-            - placeholder="First number": Displays the text "First number" inside the input field as a hint to the user.
-        -->
-        
-        <input type="number" id="b" placeholder="Second number"><br>
-        <!--
-            <input> Element: Second Number Input
-            
-            - type="number": Specifies that the input should accept numeric values.
-            - id="b": Assigns a unique identifier "b" to this input, allowing it to be accessed via JavaScript.
-            - placeholder="Second number": Displays the text "Second number" inside the input field as a hint to the user.
-            
-            <br> Tag: Line Break
-            
-            Inserts a line break after the second input field, moving subsequent elements to the next line.
-        -->
-        
-        <button onclick="calculate('add')">Add</button>
-        <!--
-            <button> Element: Add Button
-            
-            - onclick="calculate('add')": Sets up an event handler that calls the JavaScript function "calculate"
-              with the argument 'add' when the button is clicked.
-            - "Add": The text displayed on the button.
-        -->
-        
-        <button onclick="calculate('subtract')">Subtract</button>
-        <!--
-            <button> Element: Subtract Button
-            
-            - onclick="calculate('subtract')": Sets up an event handler that calls the JavaScript function "calculate"
-              with the argument 'subtract' when the button is clicked.
-            - "Subtract": The text displayed on the button.
-        -->
-        
-        <button onclick="calculate('multiply')">Multiply</button>
-        <!--
-            <button> Element: Multiply Button
-            
-            - onclick="calculate('multiply')": Sets up an event handler that calls the JavaScript function "calculate"
-              with the argument 'multiply' when the button is clicked.
-            - "Multiply": The text displayed on the button.
-        -->
-        
-        <button onclick="calculate('divide')">Divide</button>
-        <!--
-            <button> Element: Divide Button
-            
-            - onclick="calculate('divide')": Sets up an event handler that calls the JavaScript function "calculate"
-              with the argument 'divide' when the button is clicked.
-            - "Divide": The text displayed on the button.
-        -->
-        
-        <div class="result" id="result"></div>
-        <!--
-            <div> Element: Result Display
-            
-            - class="result": Assigns the "result" class to this <div>, allowing it to be styled using CSS.
-            - id="result": Assigns a unique identifier "result" to this <div>, enabling it to be accessed and manipulated via JavaScript.
-            
-            This <div> is used to display the result of the arithmetic operation or any error messages.
-        -->
+    <div class="card">
+        <h1>Calculator</h1>
+        <p class="subtitle">Enter two numbers and choose an operation</p>
+
+        <div class="inputs">
+            <input type="number" id="a" placeholder="First number">
+            <input type="number" id="b" placeholder="Second number">
+        </div>
+
+        <div class="ops">
+            <button class="btn-add" onclick="calculate('add')">+ Add</button>
+            <button class="btn-sub" onclick="calculate('subtract')">− Subtract</button>
+            <button class="btn-mul" onclick="calculate('multiply')">× Multiply</button>
+            <button class="btn-div" onclick="calculate('divide')">÷ Divide</button>
+        </div>
+
+        <div class="result-box" id="result">Result will appear here</div>
     </div>
-    
+
     <script>
-        /*
-            <script> Section: JavaScript
-            
-            The <script> element allows you to embed JavaScript code directly within the HTML document.
-            JavaScript is a programming language that enables interactive and dynamic content on web pages.
-            In this example, JavaScript is used to handle calculator operations by sending requests to the server
-            and updating the page based on the server's response.
-        */
-        
         async function calculate(operation) {
-            /*
-                Function: calculate
-                
-                The 'calculate' function performs an arithmetic operation by sending a POST request
-                to the corresponding API endpoint. It retrieves the input values, sends them to the server,
-                and updates the result display based on the server's response.
-                
-                Parameters:
-                - operation (string): The arithmetic operation to perform ('add', 'subtract', 'multiply', 'divide').
-                
-                Steps:
-                1. Retrieve the values from the input fields with IDs 'a' and 'b'.
-                2. Parse the retrieved values to floating-point numbers.
-                3. Send a POST request to the server at the endpoint corresponding to the operation.
-                4. Await the server's response and parse it as JSON.
-                5. Log the response status and data to the console for debugging purposes.
-                6. If the response is successful (status code 200), display the result.
-                7. If the response indicates an error, display the error message.
-                8. Handle any network or unexpected errors by displaying an error message.
-            */
-            
-            // Retrieve the value of the first input field (ID: 'a') and parse it as a float
             const a = parseFloat(document.getElementById('a').value);
-            
-            // Retrieve the value of the second input field (ID: 'b') and parse it as a float
             const b = parseFloat(document.getElementById('b').value);
-            
-            // Get the <div> element where the result or error message will be displayed
-            const resultElement = document.getElementById('result');
-    
+            const resultEl = document.getElementById('result');
+
+            if (isNaN(a) || isNaN(b)) {
+                resultEl.className = 'result-box error';
+                resultEl.innerText = 'Please enter valid numbers in both fields.';
+                return;
+            }
+
             try {
-                /*
-                    Sending the POST Request
-                    
-                    - fetch('/' + operation, {...}): Sends a POST request to the server at the path corresponding
-                      to the operation (e.g., '/add', '/subtract').
-                      
-                    - method: 'POST': Specifies the HTTP method as POST, indicating that data is being sent to the server.
-                    
-                    - headers: { 'Content-Type': 'application/json' }: Sets the 'Content-Type' header to 'application/json',
-                      informing the server that the request body contains JSON data.
-                      
-                    - body: JSON.stringify({ a: a, b: b }): Converts the JavaScript object { a: a, b: b } into a JSON string
-                      to be sent in the request body.
-                */
                 const response = await fetch('/' + operation, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ a: a, b: b })
+                    body: JSON.stringify({ a, b })
                 });
-                
-                // Await and parse the response as JSON
                 const data = await response.json();
-                
-                // Log the response status and data to the browser's console for debugging
-                console.log('Response Status:', response.status);
-                console.log('Response Data:', data);
-                
+
                 if (response.ok) {
-                    /*
-                        Successful Response Handling
-                    
-                        - response.ok: A boolean indicating whether the HTTP status code is in the range 200-299,
-                          which means the request was successful.
-                          
-                        - resultElement.innerText: Updates the text inside the result <div> to display the result.
-                    */
-                    resultElement.innerText = 'Calculation Result: ' + data.result;
+                    resultEl.className = 'result-box success';
+                    resultEl.innerText = data.result;
                 } else {
-                    /*
-                        Error Response Handling
-                    
-                        - If the response is not successful, it is expected to contain an 'error' field with
-                          a descriptive message.
-                          
-                        - resultElement.innerText: Updates the text inside the result <div> to display the error message.
-                    */
-                    resultElement.innerText = 'Error: ' + data.error;
+                    resultEl.className = 'result-box error';
+                    resultEl.innerText = data.error;
                 }
-            } catch (error) {
-                /*
-                    Catch Block: Handling Network or Unexpected Errors
-                
-                    - Any errors that occur during the fetch operation (e.g., network issues) are caught here.
-                    
-                    - console.error: Logs the error to the browser's console for debugging.
-                    
-                    - resultElement.innerText: Updates the text inside the result <div> to display the error message.
-                */
-                console.error('Fetch error:', error);
-                resultElement.innerText = 'Error: ' + error.message;
+            } catch (err) {
+                resultEl.className = 'result-box error';
+                resultEl.innerText = 'Network error: ' + err.message;
             }
         }
     </script>

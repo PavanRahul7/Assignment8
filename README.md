@@ -146,7 +146,8 @@ The workflow (`.github/workflows/ci.yml`) runs automatically on every push/PR to
 - **Job 1: `unit-and-integration-tests`** — Installs dependencies, runs unit + integration tests with coverage
 - **Job 2: `e2e-tests`** — Installs dependencies + Playwright browsers, runs E2E tests
 
-Screenshot
-<img width="1915" height="978" alt="Screenshot 2026-03-31 183054" src="https://github.com/user-attachments/assets/90fd92dc-ba30-4c48-b792-7deb5c6dd3e7" />
+## Screenshot
+<img width="1908" height="967" alt="Screenshot 2026-03-31 184332" src="https://github.com/user-attachments/assets/6beb4446-ff53-4adb-9554-71c74563b048" />
+
 
 
